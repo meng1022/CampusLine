@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.project.mapper.PostMapper">
+    <update id="updatePost">
+        update post set post_content=#{post.post_content}
+        where post_id=#{post.post_id}
+    </update>
+
+    <insert id="insertPost" parameterType="com.example.project.entity.Post">
+        insert into post(module_name,post_content,post_author,post_createtime)
+        values (#{post.module_name},#{post.post_content},#{post.post_author},UTC_TIMESTAMP)
+    </insert>
+
+    <select id="getPost" resultType="com.example.project.entity.Post">
+        select * from post
+        where post_id = #{post_id}
+    </select>
+
+    <select id="searchPosts" resultType="com.example.project.entity.Post">
+        select * from post
+        where post_content like "%"#{key}"%"
+        order by post_createtime desc
+    </select>
+
+    <select id="getPostsbyAuthor" resultType="com.example.project.entity.Post">
+        select * from post
+        where post_author = #{username}
+        order by post_createtime desc
+    </select>
+
+    <select id="getFollowPost" resultType="com.example.project.entity.Post">
+        select * from post
+        where post_author in (select username from user_follower
+                              where  follower = #{follower})
+        order by post_createtime desc LIMIT 10
+    </select>
+
+    <select id="getPosts" resultType="com.example.project.entity.Post">
+        select * from post
+        where module_name = #{module_name}
+        <if test="module_name == 'life'">
+            or module_name is null
+        </if>
+        and post_author = #{username}
+        order by post_createtime desc
+    </select>
+
+    <delete id="deletePost">
+        delete from post
+        where post_id = #{post_id}
+    </delete>
+
+    <select id="existLike" resultType="java.lang.Integer">
+        select count(1) from post_like
+        where post_id = #{post_id}
+          and like_user = #{username}
+    </select>
+
+    <insert id="insertLike">
+        insert into post_like(post_id,like_user,like_time)
+        values (#{post_id},#{username},UTC_TIMESTAMP)
+    </insert>
+
+    <delete id="deleteLike">
+        delete from post_like
+        where post_id = #{post_id}
+         and like_user = #{username}
+    </delete>
+
+    <select id="getLikes" resultType="java.lang.String">
+        select like_user from post_like
+        where post_id = #{post_id}
+        order by like_time desc
+    </select>
+
+    <select id="existCollect" resultType="java.lang.Integer">
+        select count(1) from post_collect
+        where post_id = #{post_id}
+          and collect_user = #{username}
+    </select>
+
+    <insert id="insertCollect">
+        insert into post_collect
+        values (#{post_id},#{username})
+    </insert>
+
+    <delete id="deleteCollect">
+        delete from post_collect
+        where post_id = #{post_id}
+          and collect_user = #{username}
+    </delete>
+
+    <select id="getCollects" resultType="com.example.project.entity.Post">
+        select * from post
+        where post_id in (select post_id from post_collect
+                          where collect_user = #{username})
+    </select>
+
+    <select id="countCollect" resultType="java.lang.Integer">
+        select count(1) from post_collect
+        where collect_user = #{username}
+    </select>
+
+    <select id="getLikedPost" resultType="com.example.project.entity.PostLike">
+        select * from post_like
+        where post_id in (select post_id from post where post_author=#{username})
+    </select>
+
+    <select id="getNew1" resultType="java.lang.Integer">
+        select count(*) from post_like
+        where post_id in (select post_id from post where post_author=#{username}) and viewed=0
+    </select>
+
+    <select id="getNew2" resultType="java.lang.Integer">
+        select count(*) from (comment_like left join post_comment on comment_like.comment_id=post_comment.comment_id) where comment_user=#{username} and comment_like.viewed=0
+    </select>
+
+    <select id="getNew3" resultType="java.lang.Integer">
+        select count(*) from post_comment where post_id in (select post_id from post where post_author=#{username}) and viewed=0
+    </select>
+
+    <select id="getNew4" resultType="java.lang.Integer">
+        select count(*) from comment_reply where to_user=#{username} and viewed=0
+    </select>
+
+
+
+    <update id="updateV">
+        <if test="choice==1">
+            update post_like set viewed=1 where post_id in
+            (select post_id from post where post_author=#{username})
+        </if>
+        <if test="choice==2">
+            update comment_like set viewed=1 where comment_id in
+            (select comment_id from post_comment where comment_user=#{username})
+        </if>
+        <if test="choice==3">
+            update post_comment set viewed=1 where post_id in
+            (select post_id from post where post_author=#{username})
+        </if>
+        <if test="choice==4">
+            update comment_reply set viewed=1 where to_user=#{username}
+        </if>
+    </update>
+
+    <update id="updateP">
+        update post set
+        <if test="choice==1">
+            post_likes = post_likes+1
+        </if>
+        <if test="choice==-1">
+            post_likes = post_likes-1
+        </if>
+        <if test="choice==2">
+            post_comments = post_comments+1
+        </if>
+        <if test="choice==-2">
+            post_comments = post_comments-1
+        </if>
+        <if test="choice==3">
+            post_collections = post_collections+1
+        </if>
+        <if test="choice==-3">
+            post_collections = post_collections-1
+        </if>
+        where post_id = #{post_id}
+    </update>
+
+<!--    <update id="updatePoint">-->
+<!--        update module_point set-->
+<!--        point = point+#{point}-->
+<!--        where username = #{username}-->
+<!--        and module_name = #{module_name}-->
+<!--    </update>-->
+
+</mapper>
