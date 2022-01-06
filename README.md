@@ -3,22 +3,19 @@ A Social Nerworking Services(SNS) web application based on SpringBoot, Vue.js, M
 
 
 ## Table of Contents
----
-* [Introduction](introduction)
-* [Technologies](technologies)
-* [Functionalities](functionalities)
-* [Structure](structure)
-* [Launch](launch)
-* [Examples](examples)
+* [Introduction](#introduction)
+* [Technologies](#technologies)
+* [Functionalities](#functionalities)
+* [Structure](#structure)
+* [Launch](#launch)
+* [Examples](#examples)
 
 ## Introduction
----
 * CampusLine is a social networking & knowledge-sharing web application for students to address a couple of problems caused by online learning.
 
 * It makes communicating with classmates about daily lives and course problems more convenient.
 
 ## Technologies
----
 * For the whole system life cycle, we use agile development methods: Regular group meeting, GitLab version control, GitLab Issue Board and  Online sharing documents.
 
 * For the front-end, we use Vue.js as the basic framework, and BootStrap to provide outlooks.
@@ -31,7 +28,6 @@ A Social Nerworking Services(SNS) web application based on SpringBoot, Vue.js, M
 
 
 ## Functionalities
----
 ### Our application are generally used by 3 roles:
 * Visitors: They can sign up, log in, browse homepage and hotposts, and search posts or users in the platform.
 
@@ -39,8 +35,7 @@ A Social Nerworking Services(SNS) web application based on SpringBoot, Vue.js, M
 
 * Module Administrator: With the functions the above 2 roles have, they are given the authorization to create or delete modules, manage posts in their responsible modules.
 
-## Sturcture
----
+## Structure
 ### This is  the main structure of back-end:
 ```
 +---src
@@ -98,9 +93,55 @@ A Social Nerworking Services(SNS) web application based on SpringBoot, Vue.js, M
 +---test      
 \---tests_output
 ```
+* config is configuration file folder.
 
+* e2e_test, mochawesome-report, output, reports, test, and tests_output are testing codes and result output files.
+
+* node_modules contains all the dependencies our system needs.
+
+* App.vue is a template that all the pages uses, and main.js tells what tools we use, and some other basic configures like the baseURL.
+
+* components comprise the components needed by pages.
+
+* router controls the router information between pages and URLs.
+
+* view is pages.
 
 ## Launch
----
+### 1. Run the back-end:
+* Prepare Database, you need to run the db.sql in the repository to generate the database table structures. Change the database username and password to your owns in spring-boot-project/src/main/resources/generatorConfig.properties
+
+* Import the spring-boot-project folder as Maven project, run maven install to install necessary dependencies.
+
+* Run SpringBootProjectApplication to start the back-end application.
+
+### 2. Run the front-end:
+* You need to install Node.js first.
+
+* After installing Node.js, install needed dependencies by running:
+```
+\ vue-project> npm install
+```
+* Start the front-end project by running:
+```
+\ vue-project> npm run dev
+```
+
+* The terminal will tell you the URL where the project runs
 
 ## Examples
+
+### 1. This is the homepage
+![homepage](./img/homepage.png)
+
+### 2. This is the module homepage
+![module_homepage](./img/module_homepage.png)
+
+### 3. This is one of the module pages
+![module](./img/module.png)
+
+### 4. This is the notification page
+![notify](./img/notification.png)
+
+### 4. This is the profile page
+![profile](./img/profile.png)
