@@ -18,6 +18,8 @@ A Social Nerworking Services(SNS) web application based on SpringBoot, Vue.js, M
 ## Technologies
 * For the whole system life cycle, we use agile development methods: Regular group meeting, GitLab version control, GitLab Issue Board and  Online sharing documents.
 
+* We seperate the frontend and backend for easier development.
+
 * For the front-end, we use Vue.js as the basic framework, and BootStrap to provide outlooks.
 
 * For back-end, we use SpringBoot framework as fundemental framework.
