@@ -143,5 +143,7 @@ A Social Nerworking Services(SNS) web application based on SpringBoot, Vue.js, M
 ### 4. This is the notification page
 ![notify](./img/notification.png)
 
-### 4. This is the profile page
+### 5. This is the profile page
 ![profile](./img/profile.png)
+
+### More pages will be found when you run our application
